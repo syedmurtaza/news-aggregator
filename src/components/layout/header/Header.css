@@ -1,0 +1,17 @@
+@font-face {
+    font-family: chomsky;
+    font-style: normal;
+    font-weight: 400;
+    src: local('Chomsky'), url('../../../../public/fonts/Chomsky.woff')
+}
+
+.NewsHeading {
+    font-family: 'Chomsky', sans-serif;
+}
+
+.header {
+    width: 100%;
+    text-align: center;
+    color: white;
+    background-color: #9c9999;
+  }
