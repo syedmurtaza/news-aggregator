@@ -1,0 +1,27 @@
+/* Login Page */
+.BgImage {
+    background-image: url('../../../../public/images/newsBanner.jpg');
+ 
+    background-position:center;
+    border: 1px;
+    border-radius: 5px;
+}
+
+.LoginForm
+ {
+  max-width: 350px;
+  margin: auto;
+}
+
+.UserAvatar{
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+  }
+
+
+  
