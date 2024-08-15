@@ -3,18 +3,32 @@ import Select from 'react-select';
 import DatePicker from "react-datepicker";
 import { SECTIONDATA } from "../../../constants/SectionData"
 import { SOURCEDATA } from "../../../constants/SourceData"
-import { NUMBERSDATA } from "../../../constants/NumbersData"
+import { PERSONALIZED_DATA } from '../../../constants/Constants';
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 
 
+
 const FilterForm = ({ onSubmit, loading }) => {
     const currentDate = moment(new Date()).format("YYYY-MM-DD");
+    let PersonalizedData = {};
+    
+    if (localStorage.getItem(PERSONALIZED_DATA) !== null) { 
+         PersonalizedData = JSON.parse(localStorage.getItem(PERSONALIZED_DATA));
+      
+        // initialState = {
+        //   selectedSection: PersonalizedData.selectedSection,
+        //   selectedSource: PersonalizedData.selectedSource,
+        //   startDate: PersonalizedData.startDate,
+        //   endDate: PersonalizedData.endDate
+        // };
+
+    }
+
     const [selectedSection, setSelectedSection] = useState(null);
     const [selectedSource, setSelectedSource] = useState(null);
-    const [startDate, setStartDate] = useState(currentDate);
-    const [endDate, setEndDate] = useState(currentDate);
-    const [size, setSize] = useState('10');
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
     const handleSectionChange = (option) => {
         setSelectedSection(option);
@@ -36,21 +50,44 @@ const FilterForm = ({ onSubmit, loading }) => {
         setEndDate(eDate);
     };
 
-    const handleSizeChange = (size) => {
-        setSize(size);
-        console.log(`Size selected:`, size);
-    };
 
+    const handlePersonalized = () => {
+
+        let PersonalizedData = {
+            ...(selectedSection !== null && { selectedSection }),
+            ...(selectedSource !== null ? { selectedSource }: {'selectedSource': SOURCEDATA}),
+            ...(startDate !== null && { startDate }),
+            ...(endDate !== null && { endDate })
+        }
+
+        localStorage.setItem(PERSONALIZED_DATA, JSON.stringify(PersonalizedData));
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        if(startDate){
+            if(startDate > currentDate){
+                alert("The Start date can never be greater than the current date.");
+                return false;
+            }
+        }    
+
+        if(startDate && endDate){
+           //validate the end Date should be greater than or eQual to start date
+ 
+            if (endDate < startDate){
+                alert("The End date should be greater than or equal to the start date.");
+                return false;
+            }
+        }
+
         onSubmit({
-            ...(selectedSection !== null && { selectedSection }), // Include selectedSection only if it's not null
-            ...(selectedSource !== null && { selectedSource }), // Include selectedSource only if it's not null
-            startDate,
-            endDate,
-            size
+            ...(selectedSection !== null && { selectedSection }),
+            ...(selectedSource !== null && { selectedSource }),
+            ...(startDate !== null && { startDate }),
+            ...(endDate !== null && { endDate })
+
         });
     };
 
@@ -61,7 +98,7 @@ const FilterForm = ({ onSubmit, loading }) => {
                 <div className="card-header"><h4>Filter News Feed</h4></div>
                 <div className="card-body">
                     <div className='row'>
-                        <div className="col-sm-12 col-md-5">
+                        <div className="col-sm-12 col-md-6">
                             <Select
                                 isMulti
                                 value={selectedSource}
@@ -72,7 +109,7 @@ const FilterForm = ({ onSubmit, loading }) => {
                             /></div>
 
 
-                        <div className="col-sm-12 col-md-5">
+                        <div className="col-sm-12 col-md-6">
                             <Select
                                 value={selectedSection}
                                 onChange={handleSectionChange}
@@ -80,14 +117,7 @@ const FilterForm = ({ onSubmit, loading }) => {
                                 placeholder="Select Section"
                                 name='section'
                             /></div>
-                        <div className="col-sm-12 col-md-2">
-                            <Select
-                                value={size}
-                                onChange={handleSizeChange}
-                                options={NUMBERSDATA}
-                                placeholder="Select Size"
-                                name='newsSize'
-                            /></div>
+
                     </div>
                     <div className='row mt-2'>
                         <div className="col-sm-12 col-md-2"><label>From Date</label></div>
@@ -111,9 +141,16 @@ const FilterForm = ({ onSubmit, loading }) => {
                     </div>
 
                 </div>
-                <div className="card-footer text-end"> <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
-                    {loading ? "Filtering News" : "Filter News"}
-                </button></div>
+                <div className="card-footer text-end">
+                    <button type="button" onClick={handlePersonalized} className="btn btn-danger btn-block" title='Personalized'>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-bag-heart" viewBox="0 0 16 16">
+                            <path fillRule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M14 14V5H2v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1M8 7.993c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132" />
+                        </svg>
+                    </button>
+                    &nbsp;
+                    <button type="submit" className="btn btn-primary btn-block" disabled={loading} title='Filter News'>
+                        {loading ? "Filtering News" : "Filter News"}
+                    </button></div>
             </div>
         </form>
 

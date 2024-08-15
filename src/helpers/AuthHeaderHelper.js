@@ -1,4 +1,4 @@
-import USER_STORAGE_NAME from "../constants/config";
+import USER_STORAGE_NAME from "../constants/Constants";
 
 export default function AuthHeaderHelper() {
     const user = JSON.parse(localStorage.getItem(USER_STORAGE_NAME));
