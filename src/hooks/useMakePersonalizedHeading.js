@@ -1,34 +1,34 @@
 import { useState, useEffect } from 'react';
-import { useInitialFilterState } from './useInitialFilterState';
+import { usePersonalizedState } from './usePersonalizedState';
 
 export const useMakePersonalizedHeading = () => {
   const [showPersonalizedText, setShowPersonalizedText] = useState(null);
 
-  const [getPersonalizedData, setPersonalizedData] = useInitialFilterState();
-  const initialState = getPersonalizedData();
+  const [getPersonalizedData] = usePersonalizedState();
+  const PersonalizedState = getPersonalizedData();
 
   useEffect(() => {
     let ps = '';
 
-    if (initialState) {
+    if (PersonalizedState) {
       try {
 
-        if (initialState.selectedSource) {
-          let sources = initialState.selectedSource.map(source => source.label);
+        if (PersonalizedState.selectedSource) {
+          let sources = PersonalizedState.selectedSource.map(source => source.label);
           ps += `<strong>Personalized Sources</strong> = ${sources.toString()}<br>\n`;
         }
 
-        if (initialState.selectedSection) {
-          ps += `<strong>Personalized Section</strong> = ${initialState.selectedSection.label}<br>\n`;
+        if (PersonalizedState.selectedSection) {
+          ps += `<strong>Personalized Section</strong> = ${PersonalizedState.selectedSection.label}<br>\n`;
         }
 
-        if (initialState.startDate) {
-          ps += `<strong>Personalized Date= </strong>&nbsp;<strong>From:</strong>  ${initialState.startDate}`;
+        if (PersonalizedState.startDate) {
+          ps += `<strong>Personalized Date= </strong>&nbsp;<strong>From:</strong>  ${PersonalizedState.startDate}`;
         }
 
 
-        if (initialState.endDate) {
-          ps += `&nbsp;<strong>To:</strong> ${initialState.endDate}<br>\n`;
+        if (PersonalizedState.endDate) {
+          ps += `&nbsp;<strong>To:</strong> ${PersonalizedState.endDate}<br>\n`;
         }
 
         setShowPersonalizedText(ps);
@@ -40,7 +40,7 @@ export const useMakePersonalizedHeading = () => {
       setShowPersonalizedText(ps);
 
     }
-  }, [initialState]);
+  }, [PersonalizedState]);
 
   return showPersonalizedText;
 };
