@@ -4,17 +4,22 @@ FROM node:22.6.0-alpine AS newsaggregator
 ENV NODE_ENV=production
 ENV DISABLE_ESLINT_PLUGIN=true
 
+# Set Working directory
+
 WORKDIR /news-aggregator
 
 COPY package.json package-lock.json ./
 
+# Make sure to clear the NPM cache and also remove old node_modules to avoid any conflicts.
 RUN npm cache clean --force
 RUN rm -rf node_modules
 
+# Install both development and production packages to avoid errors
 RUN npm install --production=false
 
-COPY . .
+# Copy All the folders and files of the current directory to the docker
 
+COPY . .
 
 # Building our application
 RUN npm run build
