@@ -7,10 +7,11 @@ ENV DISABLE_ESLINT_PLUGIN=true
 WORKDIR /news-aggregator
 
 COPY package.json package-lock.json ./
+
 RUN npm cache clean --force
 RUN rm -rf node_modules
 
-RUN npm install
+RUN npm install --production=false
 
 COPY . .
 
@@ -22,7 +23,7 @@ RUN npm run build
 FROM nginx
 
 # Copying built assets from builder
-COPY --from=newsaggregator /app/build /usr/share/nginx/html
+COPY --from=newsaggregator /news-aggregator/build /usr/share/nginx/html
 
 # Copying our nginx.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf

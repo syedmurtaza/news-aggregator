@@ -4,11 +4,12 @@ import { useInitialFilterState } from './useInitialFilterState';
 export const useMakePersonalizedHeading = () => {
   const [showPersonalizedText, setShowPersonalizedText] = useState(null);
 
-  const initialState = useInitialFilterState();
+  const [getPersonalizedData, setPersonalizedData] = useInitialFilterState();
+  const initialState = getPersonalizedData();
 
   useEffect(() => {
     let ps = '';
-    
+
     if (initialState) {
       try {
 
@@ -27,7 +28,7 @@ export const useMakePersonalizedHeading = () => {
 
 
         if (initialState.endDate) {
-          ps += `&nbsp;\<strong>To:</strong> ${initialState.endDate}<br>\n`;
+          ps += `&nbsp;<strong>To:</strong> ${initialState.endDate}<br>\n`;
         }
 
         setShowPersonalizedText(ps);

@@ -1,39 +1,27 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-import DatePicker from "react-datepicker";
 import { SECTIONDATA } from "../../../constants/SectionData"
 import { SOURCEDATA } from "../../../constants/SourceData"
-import { PERSONALIZED_DATA } from '../../../constants/Constants';
+import { useInitialFilterState } from '../../..//hooks/useInitialFilterState';
+import CustomDatePicker from '../../common/CustomDatePicker';
+
+
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 
-
-
 const FilterForm = ({ onSubmit, loading }) => {
-    const currentDate = moment(new Date()).format("YYYY-MM-DD");
-    let PersonalizedData = {};
-    
-    if (localStorage.getItem(PERSONALIZED_DATA) !== null) { 
-         PersonalizedData = JSON.parse(localStorage.getItem(PERSONALIZED_DATA));
-      
-        // initialState = {
-        //   selectedSection: PersonalizedData.selectedSection,
-        //   selectedSource: PersonalizedData.selectedSource,
-        //   startDate: PersonalizedData.startDate,
-        //   endDate: PersonalizedData.endDate
-        // };
+    const [getPersonalizedData, setPersonalizedData] = useInitialFilterState();
 
-    }
+    const PersonalizedData = getPersonalizedData();
 
-    const [selectedSection, setSelectedSection] = useState(null);
-    const [selectedSource, setSelectedSource] = useState(null);
-    const [startDate, setStartDate] = useState(null);
-    const [endDate, setEndDate] = useState(null);
+    const [selectedSection, setSelectedSection] = useState(PersonalizedData.selectedSection || null);
+    const [selectedSource, setSelectedSource] = useState(PersonalizedData.selectedSource || null);
+    const [startDate, setStartDate] = useState(PersonalizedData.startDate || null);
+    const [endDate, setEndDate] = useState(PersonalizedData.endDate || null);
 
     const handleSectionChange = (option) => {
         setSelectedSection(option);
     };
-
 
     const handleSourceChange = (option) => {
         setSelectedSource(option);
@@ -45,54 +33,31 @@ const FilterForm = ({ onSubmit, loading }) => {
     };
 
     const handleEndDateSelect = (eDate) => {
-
         eDate = moment(eDate).format("YYYY-MM-DD");
         setEndDate(eDate);
     };
 
-
     const handlePersonalized = () => {
-
         let PersonalizedData = {
             ...(selectedSection !== null && { selectedSection }),
-            ...(selectedSource !== null ? { selectedSource }: {'selectedSource': SOURCEDATA}),
+            ...(selectedSource !== null && { selectedSource }),
             ...(startDate !== null && { startDate }),
             ...(endDate !== null && { endDate })
         }
-
-        localStorage.setItem(PERSONALIZED_DATA, JSON.stringify(PersonalizedData));
+        setPersonalizedData(PersonalizedData);
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        if(startDate){
-            if(startDate > currentDate){
-                alert("The Start date can never be greater than the current date.");
-                return false;
-            }
-        }    
-
-        if(startDate && endDate){
-           //validate the end Date should be greater than or eQual to start date
- 
-            if (endDate < startDate){
-                alert("The End date should be greater than or equal to the start date.");
-                return false;
-            }
-        }
-
         onSubmit({
             ...(selectedSection !== null && { selectedSection }),
             ...(selectedSource !== null && { selectedSource }),
             ...(startDate !== null && { startDate }),
             ...(endDate !== null && { endDate })
-
         });
     };
 
     return (
-
         <form onSubmit={handleSubmit}>
             <div className="card">
                 <div className="card-header"><h4>Filter News Feed</h4></div>
@@ -106,9 +71,8 @@ const FilterForm = ({ onSubmit, loading }) => {
                                 options={SOURCEDATA}
                                 placeholder="Select Source"
                                 name='newsSource'
-                            /></div>
-
-
+                            />
+                        </div>
                         <div className="col-sm-12 col-md-6">
                             <Select
                                 value={selectedSection}
@@ -116,30 +80,23 @@ const FilterForm = ({ onSubmit, loading }) => {
                                 options={SECTIONDATA}
                                 placeholder="Select Section"
                                 name='section'
-                            /></div>
-
+                            />
+                        </div>
                     </div>
                     <div className='row mt-2'>
-                        <div className="col-sm-12 col-md-2"><label>From Date</label></div>
-                        <div className="col-sm-12 col-md-4">
-                            <DatePicker
-                                selected={startDate}
-                                //onSelect={handleStartDateSelect}
-                                onChange={handleStartDateSelect}
-                                name='from-date'
-                            />
-                        </div>
-                        <div className="col-sm-12 col-md-2"><label>To Date</label></div>
-                        <div className="col-sm-12 col-md-4">
-                            <DatePicker
-                                selected={endDate}
-                                //onSelect={handleEndDateSelect}
-                                onChange={handleEndDateSelect}
-                                name='to-date'
-                            />
-                        </div>
+                        <CustomDatePicker
+                            selected={startDate}
+                            onChange={handleStartDateSelect}
+                            name='from-date'
+                            label="From Date"
+                        />
+                        <CustomDatePicker
+                            selected={endDate}
+                            onChange={handleEndDateSelect}
+                            name='to-date'
+                            label="To Date"
+                        />
                     </div>
-
                 </div>
                 <div className="card-footer text-end">
                     <button type="button" onClick={handlePersonalized} className="btn btn-danger btn-block" title='Personalized'>
@@ -150,10 +107,10 @@ const FilterForm = ({ onSubmit, loading }) => {
                     &nbsp;
                     <button type="submit" className="btn btn-primary btn-block" disabled={loading} title='Filter News'>
                         {loading ? "Filtering News" : "Filter News"}
-                    </button></div>
+                    </button>
+                </div>
             </div>
         </form>
-
     );
 };
 
