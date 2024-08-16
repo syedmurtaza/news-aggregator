@@ -31,7 +31,7 @@ This command does the following:
 After building the image, you can run the container using this command:
 
 ```bash
-sudo docker run -d -it --rm -p 8090:8090 --name newsaggregator newsaggregator/ng
+sudo docker run -d -it --rm -p 8090:8090 --name newsaggregator newsaggregator:ng
 ```
 
 ## Comments
