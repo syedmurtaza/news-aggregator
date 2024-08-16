@@ -19,12 +19,12 @@ sudo docker build --no-cache -f Dockerfile -t newsaggregator:ng .
 
 This command does the following:
 
-**sudo**: Runs the command with superuser privileges
-**docker build**: Builds a Docker image
-**--no-cache**: Builds the image without using the cache
-**-f Dockerfile**: Specifies the Dockerfile to use
-**-t newsaggregator:ng**: Tags the image as "newsaggregator" with the tag "ng"
-**.**: Uses the current directory as the build context
+**sudo**: Runs the command with superuser privileges  
+**docker build**: Builds a Docker image  
+**--no-cache**: Builds the image without using the cache  
+**-f Dockerfile**: Specifies the Dockerfile to use  
+**-t newsaggregator:ng**: Tags the image as "newsaggregator" with the tag "ng"  
+**.**: Uses the current directory as the build context  
 
 ## Running the Docker Image
 
@@ -38,27 +38,27 @@ sudo docker run -d -it --rm -p 8090:8090 --name newsaggregator newsaggregator/ng
 
 This command does the following:
 
-**sudo**: Runs the command with superuser privileges
-**docker run**: Creates and runs a new container
-**-d**: Runs the container in detached mode (in the background)
-**-it**: Allocates a pseudo-TTY and keeps STDIN open
-**--rm**: Automatically removes the container when it exits
-**-p 8090:8090**: Maps port 8090 on the host to port 8090 in the container
-**--name newsaggregator**: Names the container "newsaggregator"
-**newsaggregator:ng**: Specifies the image to use
+**sudo**: Runs the command with superuser privileges  
+**docker run**: Creates and runs a new container  
+**-d**: Runs the container in detached mode (in the background)  
+**-it**: Allocates a pseudo-TTY and keeps STDIN open  
+**--rm**: Automatically removes the container when it exits  
+**-p 8090:8090**: Maps port 8090 on the host to port 8090 in the container  
+**--name newsaggregator**: Names the container "newsaggregator"  
+**newsaggregator:ng**: Specifies the image to use  
 
 ## Accessing the Application
 
 Once the container is running, you can access the News Aggregator application by navigating to:
 
 ```link
-[http://localhost:8090/](http://localhost:8090/)
+[News Aggregator Assignment](http://localhost:8090/)
 ```
 in your web browser.
 
 ### Credentials
 
-**username:** adm_nsw
+**username:** adm_nsw  
 **password:** aalansw*3
 
 *__Note:__* *This doesn't validate the user against the database using an API. It simply uses hard-coded credentials to secure the news aggregator page.*
