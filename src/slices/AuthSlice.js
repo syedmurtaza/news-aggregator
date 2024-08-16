@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login } from "../thunk/LoginThunk";
 import { logout } from "../thunk/LogoutThunk";
-import {USER_STORAGE_NAME} from "../constants/config";
+import {USER_STORAGE_NAME} from "../constants/Constants";
 
 const user = JSON.parse(localStorage.getItem(USER_STORAGE_NAME));
 

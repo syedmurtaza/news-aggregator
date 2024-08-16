@@ -1,5 +1,6 @@
 //import axios from "axios";
-import { API_URL, USER_STORAGE_NAME } from "../constants/config"
+import { USER_STORAGE_NAME, PERSONALIZED_DATA } from "../constants/Constants"
+import {SOURCEDATA} from "../constants/SourceData"
 import React from "react";
 
 class AuthService extends React.Component {
@@ -10,6 +11,21 @@ class AuthService extends React.Component {
             if (username === "adm_nsw" && password === "aalansw*3") {   //Use the Dummy Data for the demo purpose. 
                 const UserData = { 'username': 'adm_nsw', 'Name': 'Athar Mehmood' };
                 localStorage.setItem(USER_STORAGE_NAME, JSON.stringify(UserData));
+
+                //Initialize the peronalized data
+
+                if(localStorage.getItem(PERSONALIZED_DATA) === null){
+                    let PersonalizedData ={
+                        selectedSection: null,
+                        selectedSource: SOURCEDATA,
+                        startDate: null,
+                        endDate: null 
+                    } 
+                    
+                    localStorage.setItem(PERSONALIZED_DATA, JSON.stringify(PersonalizedData));
+                }
+    
+                
 
                 return UserData;
             }

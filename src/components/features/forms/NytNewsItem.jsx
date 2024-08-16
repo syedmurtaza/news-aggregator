@@ -6,9 +6,9 @@ const NytNewsItem = ({ item }) => {
     const NewsData = withNewsItemData(
         item.section,
         item.title,
-        item.url,
+        item?.url,
         item.published_date,
-        item.multimedia[0].url
+        item.multimedia[2]?.url
       );
 
       return (

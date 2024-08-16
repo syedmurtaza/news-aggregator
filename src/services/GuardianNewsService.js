@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GUARDIAN_API_URL, GUARDIAN_API_KEY } from '../constants/config';
+import { GUARDIAN_API_URL, GUARDIAN_API_KEY } from '../constants/Constants';
 
 class GuardianNewsService {
     constructor() {
@@ -7,16 +7,15 @@ class GuardianNewsService {
         this.apiKey = GUARDIAN_API_KEY;
     }
 
-    async getNews(section, q) {
+    async getNews(q, section) {
         try {
 
-            if (q !==''){
-                this.apiUrl+= `?${q}&api-key=${this.apiKey}`;}
-            else if (q ===''){
-                this.apiUrl+= `?q=${section}&api-key=${this.apiKey}`;
+            if (q !== '') {
+                this.apiUrl += `?${q}&api-key=${this.apiKey}`;
             }
-            else{
-                this.apiUrl+= `?api-key=${this.apiKey}`;
+
+            else {
+                this.apiUrl += `?api-key=${this.apiKey}`;
             }
 
             const response = await axios.get(this.apiUrl);
