@@ -1,6 +1,6 @@
 import { PERSONALIZED_DATA } from '../constants/Constants';
 
-export const useInitialFilterState = () => {
+export const usePersonalizedState = () => {
   const getPersonalizedData = () => {
     const data = localStorage.getItem(PERSONALIZED_DATA);
     return data ? JSON.parse(data) : {};

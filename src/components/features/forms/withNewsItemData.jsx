@@ -5,7 +5,7 @@ const withNewsItemData = (sectionName, title, url, date, image) => {
     return function NewNewsItem() {
         date = moment(date).format("MMMM DD, YYYY");
 
-        image = image?? process.env.PUBLIC_URL + '/images/news_alt.jpg';
+        image = image ?? process.env.PUBLIC_URL + '/images/news_alt.jpg';
 
         const item = {
             sectionName: sectionName,
@@ -18,7 +18,7 @@ const withNewsItemData = (sectionName, title, url, date, image) => {
         return (
             <div className="col">
                 <div className="card CardSize float-left">
-                    {item.webImage && <img src={item.webImage} title={item.webTitle} alt={item.webTitle} className='card-img card-img-top' />}
+                    {item.webImage && <a href={item.webUrl} target="_blank" rel="noopener noreferrer"><img src={item.webImage} title={item.webTitle} alt={item.webTitle} className='card-img card-img-top' /></a>}
                     <div className="card-body">
                         {item.webTitle && <h6 className="card-title">{item.webTitle}</h6>}
                         <p className="card-text">{item.webPublicationDate}</p>
@@ -30,7 +30,7 @@ const withNewsItemData = (sectionName, title, url, date, image) => {
                     </div>}
 
                 </div>
-            </div>
+            </div >
 
         );
     };
